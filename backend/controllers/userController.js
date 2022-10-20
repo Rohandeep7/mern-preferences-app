@@ -38,7 +38,6 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new Error('Please fill all the fields')
   }
   const user=await User.findOne({email})
-  console.log(user);
   if(user && (await bcrypt.compare(password,user.password))){
     res.status(200)
     res.json({
@@ -54,7 +53,13 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const getUserDetails=asyncHandler(async (req,res)=>{
-    res.json({message:'My Details'})
+    const {_id,name,email}= await User.findById(req.user.id)
+
+    res.json({
+      id:_id,
+      name,
+      email
+    })
 })
 
 const generateToken=(id)=>{

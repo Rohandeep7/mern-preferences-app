@@ -25,7 +25,8 @@ const registerUser=asyncHandler(async (req,res)=>{
         res.json({
             id:user.id,
             name:user.name,
-            email:user.email
+            email:user.email,
+            token:generateToken(user.id)
         })
     }
 })
@@ -41,7 +42,9 @@ const loginUser = asyncHandler(async (req, res) => {
   if(user && (await bcrypt.compare(password,user.password))){
     res.status(200)
     res.json({
-        name:user.name
+        name:user.name,
+        email:user.email,
+        token:generateToken(user.id)
     })
   }
   else{
@@ -53,5 +56,9 @@ const loginUser = asyncHandler(async (req, res) => {
 const getUserDetails=asyncHandler(async (req,res)=>{
     res.json({message:'My Details'})
 })
+
+const generateToken=(id)=>{
+  return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:'30d'})
+}
 
 module.exports={registerUser,loginUser,getUserDetails}

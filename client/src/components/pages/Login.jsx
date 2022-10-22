@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import Logo from '../../assets/logo.png'
-import {Link} from 'react-router-dom'
+import React, { useState,useContext, useEffect } from 'react'
+import {Link,useNavigate} from 'react-router-dom'
 import {Zoom} from '@mui/material'
-
+import axios from 'axios'
+import {toast} from 'react-toastify'
+import AuthContext from '../../context/AuthContext'
 function Login() {
-
+  const {user, loading, error, dispatch } = useContext(AuthContext);
   const [loginData,setLoginData]=useState({})
 
   const {email,password}=loginData
-
+    const navigate=useNavigate()
   const handleChange=(e)=>{
     setLoginData((prev)=>({
         ...prev,
@@ -16,11 +17,39 @@ function Login() {
     }))
   }
 
-  const handleSubmit=(e)=>{
+  useEffect(()=>{
+    if (error !== null) {
+      toast.error(error);
+      dispatch({ type: "CLEAR_ERROR" });
+    } else if (user !== null) {
+      toast.success(`Welcome back ${user.name}`);
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  },[user,error,loading])
+
+  const handleSubmit=async (e)=>{
     e.preventDefault()
-    alert('Login Form Submitted')
+    
+    try{
+        dispatch({ type: "SET_LOADING" });
+        const response = await axios.post(
+          "http://localhost:5000/api/users/login",
+          loginData
+        );
+        dispatch({type:'LOGIN_USER',payload:{
+            data:response.data
+        }})
+    }
+    catch(err){
+        dispatch({type:'LOGIN_FAILURE',payload:{
+            data:err.response.data.message
+        }})
+        
+    }
   }
 
+  
   return (
     <>
       <div className="h-screen rounded-lg ">
@@ -44,7 +73,7 @@ function Login() {
               </div>
               <form
                 onSubmit={handleSubmit}
-                 className="mt-8 space-y-6"
+                className="mt-8 space-y-6"
                 action="#"
                 method="POST"
               >
@@ -58,7 +87,7 @@ function Login() {
                       id="email-address"
                       name="email"
                       type="email"
-                      value={email}
+                      value={email ? email : ""}
                       onChange={handleChange}
                       autoComplete="email"
                       required
@@ -74,7 +103,7 @@ function Login() {
                       id="password"
                       name="password"
                       type="password"
-                      value={password}
+                      value={password ? password : ""}
                       onChange={handleChange}
                       autoComplete="current-password"
                       required

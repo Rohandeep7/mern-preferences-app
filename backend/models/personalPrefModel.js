@@ -7,10 +7,22 @@ const personalPrefSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    foods: [{ text: String }],
-    places: [{ text: String }],
-    movies: [{ text: String }],
-    hobbies: [{ text: String }],
+    foods: {
+      type: [{ text: String }],
+      default: [],
+    },
+    places: {
+      type: [{ text: String }],
+      default: [],
+    },
+    movies: {
+      type: [{ text: String }],
+      default: [],
+    },
+    hobbies: {
+      type: [{ text: String }],
+      default: [],
+    },
     height: {
       type: String,
       default: "",

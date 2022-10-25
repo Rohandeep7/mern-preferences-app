@@ -4,7 +4,7 @@ import { Slide } from "@mui/material";
 function Navbar({user,handleLogout}) {
   return (
     <>
-      <Slide in={true}>
+      {/* <Slide in={true}> */}
         <div className="navbar bg-neutral text-neutral-content">
           <div className="navbar-start">
             <Link to="/" className="btn btn-ghost normal-case text-xl">
@@ -23,7 +23,7 @@ function Navbar({user,handleLogout}) {
             </btn>
           </div>
         </div>
-      </Slide>
+      {/* </Slide> */}
     </>
   );
 }

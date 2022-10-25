@@ -28,7 +28,7 @@ function PersonalInfoReducer(state,action){
       case "RESET":
         return {
           ...state,
-          personalData: null,
+          personalData: {},
           loading: false,
           error: null,
         };

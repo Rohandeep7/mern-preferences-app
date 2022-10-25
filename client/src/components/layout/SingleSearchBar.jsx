@@ -8,6 +8,7 @@ function SingleSearchBar({label,ph,type}) {
 
     const userData = JSON.parse(localStorage.getItem("user"));
 
+    console.log(personalData.shirtSize)
     let inputValue
     if(type==='shirtSize' && personalData.shirtSize) inputValue=personalData.shirtSize
     else if(type==='height' && personalData.height)
@@ -16,14 +17,14 @@ function SingleSearchBar({label,ph,type}) {
     const [input,setInput]=useState(inputValue)
     const [edit,setEdit]=useState(false)
 
-    console.log(personalData)
+    // console.log(personalData)
     const handleClick=async (e)=>{
         e.preventDefault()
-        if(edit){
+        if(edit && input){
             dispatch({type:'SET_LOADING'})
             const response=await updatePersonalData(type,input,personalData._id,userData.token)
             dispatch({type:'SET_PERSONAL_DATA',payload:{
-                data:response.data
+                data:response
             }})
             setEdit(false)
         }
@@ -32,7 +33,6 @@ function SingleSearchBar({label,ph,type}) {
         }
     }
 
-    if(loading) return <h1>Loading...</h1>
   return (
     <div className="m-4 p-4 ">
       <form className="form-control w-full h-full max-w-xl">

@@ -2,7 +2,11 @@ const asyncHandler = require("express-async-handler");
 const Pref = require("../models/personalPrefModel");
 const User = require("../models/userModel");
 const getPreferences = asyncHandler(async (req, res) => {
-  const pref = await Pref.find({ user: req.user.id });
+  let pref = await Pref.find({ user: req.user.id });
+  if(!pref){
+    console.log('hello')
+    pref = await Pref.create({ user: req.user.id });
+  }
   res.status(200).json(pref);
 });
 
@@ -74,11 +78,12 @@ const updatePreference = asyncHandler(async (req, res) => {
     );
   }
   else if(type==='shirtSize' || type==='height'){
-    updatedPref=await Pref.findOneAndUpdate({user:req.user.id},{$set : {[type]:text}})
+    updatedPref=await Pref.updateOne({user:req.user.id},{[type]:text})
   }
   
+  const updatedData=await Pref.findOne({user:req.user.id})
 
-  res.status(200).json(updatedPref);
+  res.status(200).json(updatedData);
 });
 
 const deletePreference = asyncHandler(async (req, res) => {
@@ -125,7 +130,7 @@ const deletePreference = asyncHandler(async (req, res) => {
     type === "movies" ||
     type === "places"
   ) {
-    deletedPref = await Pref.findOneAndUpdate(
+    deletedPref = await Pref.updateOne(
       { user: req.user.id, [`${type}._id`]: req.params.id },
       { $pull: { [type]: { _id: req.params.id } } }
     );
@@ -136,7 +141,8 @@ const deletePreference = asyncHandler(async (req, res) => {
     );
   }
 
-  res.status(200).json(deletedPref);
+  const updatedData=await Pref.findOne({user:req.user._id})
+  res.status(200).json(updatedData);
 });
 
 // const deletedPref = await Pref.findOneAndUpdate(

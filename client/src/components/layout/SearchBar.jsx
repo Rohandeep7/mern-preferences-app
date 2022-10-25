@@ -1,28 +1,42 @@
 import React,{useState} from 'react'
 import { useContext } from 'react';
 import { useEffect } from 'react';
-import {getPersonalData} from '../../context/PersonalInfoActions'
+import {getPersonalData,setPersonalData} from '../../context/PersonalInfoActions'
 import PersonalInfoContext from '../../context/PersonalInfoContext';
+import PersonalPrefList from '../PersonalPrefList';
 import {FaEdit} from 'react-icons/fa'
 function SearchBar({data,label,ph,type}) {
-    const {personalData,loading}=useContext(PersonalInfoContext)
-
+    const {personalData,editPersonalData,loading,dispatch}=useContext(PersonalInfoContext)
+    const userData = JSON.parse(localStorage.getItem("user"));
     // console.log(personalData)
     const [input, setInput] = useState("");
 
-    const handleSubmit = (e) => {
+    // useEffect(()=>{
+    //   if(editPersonalData.edit===true){
+    //     setInput(editPersonalData.item.text)
+    //   }
+    // })
+
+    const handleSubmit = async (e) => {
       e.preventDefault();
+      if(input){
+          dispatch({ type: "SET_LOADING" });
+          const response = await setPersonalData(type, input, userData.token);
+          dispatch({
+            type: "SET_PERSONAL_DATA",
+            payload: {
+              data: response,
+            },
+          });
+          setInput("");
+      }
       
     };
 
-    if (loading) return <h1>Loading...</h1>;
 
   return (
     <div className="m-4 p-4 ">
-      <form
-        onSubmit={handleSubmit}
-        className="form-control w-full h-full max-w-xl"
-      >
+      <form onSubmit={handleSubmit} className="w-full mb-6">
         <label className="label">
           <span className="label-text">{label}</span>
         </label>
@@ -38,14 +52,8 @@ function SearchBar({data,label,ph,type}) {
           <button className="btn btn-square px-8">Add</button>
         </div>
       </form>
-      {/* {type === "foods" &&
-        personalData.foods.map((item) => {
-          return <h1>{item.text}</h1>;
-        })}
-      {type === "hobbies" &&
-        personalData.hobbies.map((item) => {
-          return <h1>{item.text}</h1>;
-        })} */}
+      <PersonalPrefList type={type} />
+      
     </div>
   );
 }

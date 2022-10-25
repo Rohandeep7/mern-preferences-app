@@ -11,26 +11,11 @@ function PersonalPreferences() {
   const { personalData, loading, error, dispatch } =
     useContext(PersonalInfoContext);
 
-    const userData = JSON.parse(localStorage.getItem("user"));
-    useEffect(() => {
-      getAsyncData();
-    }, []);
-
-    const getAsyncData = async () => {
-      dispatch({ type: "SET_LOADING" });
-      const response = await getPersonalData(userData.token);
-      dispatch({
-        type: "GET_PERSONAL_DATA",
-        payload: {
-          data: response[0],
-        },
-      });
-    };
-
+    
 
   // console.log(personalData);
   return (
-    <Zoom in={true}>
+    // <Zoom in={true}>
       <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
         <div className="hero">
           <div className="flex flex-col hero-content text-center">
@@ -57,7 +42,7 @@ function PersonalPreferences() {
           <SingleSearchBar label="Height (cm)" ph="height" type="height" />
         </div>
       </div>
-    </Zoom>
+    // </Zoom>
   );
 }
 

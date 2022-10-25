@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 const API_URL = "http://localhost:5000/api/personal-pref/";
 
 
@@ -17,7 +16,6 @@ export const getPersonalData=async (token)=>{
 }
 
 export const updatePersonalData=async (type,text,url,token)=>{
-  console.log('hi')
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -29,3 +27,36 @@ export const updatePersonalData=async (type,text,url,token)=>{
   return response.data;
 
 }
+
+export const setPersonalData = async (type, text, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.post(API_URL, { type, text }, config);
+
+  return response.data;
+};
+
+export const deletePersonalData = async (type,id,token) => {
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  
+  const response = await axios.delete(API_URL+id, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      type: type,
+    },
+  });
+
+  console.log(response.data)
+  return response.data;
+};

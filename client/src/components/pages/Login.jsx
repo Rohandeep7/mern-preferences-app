@@ -2,6 +2,7 @@ import React, { useState,useContext, useEffect } from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import {Zoom} from '@mui/material'
 import axios from 'axios'
+import '../../index.css';
 import {toast} from 'react-toastify'
 import AuthContext from '../../context/AuthContext'
 function Login() {

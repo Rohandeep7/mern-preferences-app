@@ -15,6 +15,8 @@ app.use(express.urlencoded({extended:false}))
 
 app.use('/api/goals',require('./routes/goalRoutes'))
 app.use('/api/users',require('./routes/userRoutes'))
+app.use('/api/personal-pref',require('./routes/personalPrefRoutes'))
+app.use("/api/professional-info", require("./routes/professionalInfoRoutes"));
 
 app.use(errorHandler);
 

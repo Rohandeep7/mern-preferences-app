@@ -7,7 +7,26 @@ const professionalInfoSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    techStack: [{ text: String }],
+    skills: {
+      type: [{ text: String }],
+      default: [],
+    },
+    experience: {
+      type: [{ text: String }],
+      default: [],
+    },
+    certifications: {
+      type: [{ text: String }],
+      default: [],
+    },
+    links: {
+      type: [{ text: String }],
+      default: [],
+    },
+    role: {
+      type: String,
+      default: "",
+    },
     qualification: {
       type: String,
       default: "",
@@ -18,4 +37,4 @@ const professionalInfoSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("professionalinfo", professionalInfoSchema);
+module.exports = mongoose.model("ProfData", professionalInfoSchema);

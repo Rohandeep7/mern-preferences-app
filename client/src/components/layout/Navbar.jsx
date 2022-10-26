@@ -13,7 +13,7 @@ function Navbar({user,handleLogout}) {
           </div>
           <div className="navbar-end">
             <h2 className="mx-4 sm:mx-2 text-sm">
-              Hello, {user.name}
+              Hello, {user && user.name}
             </h2>
             <btn
               className="btn mx-2 btn-xs md:mx-4 btn-error"

@@ -3,16 +3,27 @@ import { useContext } from 'react';
 import {FaEdit} from 'react-icons/fa'
 import PersonalInfoContext from '../../context/PersonalInfoContext';
 import {updatePersonalData} from '../../context/PersonalInfoActions'
-function SingleSearchBar({label,ph,type}) {
+import ProfessionalInfoContext from '../../context/ProfessionalInfoContext';
+import {updateProfessionalData} from '../../context/ProfessionalInfoActions'
+function SingleSearchBar({tab,label,ph,type}) {
     const {personalData,error,loading,dispatch}=useContext(PersonalInfoContext)
-
+    const {professionalData,loading:loading2,dispatch:altDispatch}=useContext(ProfessionalInfoContext)
     const userData = JSON.parse(localStorage.getItem("user"));
 
-    console.log(personalData.shirtSize)
+   
     let inputValue
-    if(type==='shirtSize' && personalData.shirtSize) inputValue=personalData.shirtSize
-    else if(type==='height' && personalData.height)
-    inputValue=personalData.height
+    if(tab==='personal'){
+      if(type==='shirtSize' && personalData && personalData.shirtSize) inputValue=personalData.shirtSize
+      else if(type==='height' && personalData && personalData.height)
+      inputValue=personalData.height
+    }
+    else if(tab==='professional'){
+      if(type==='qualification' && professionalData && professionalData.qualification) 
+        inputValue=professionalData.qualification
+      else if(type==='role' && professionalData && professionalData.role)
+        inputValue=professionalData.role
+    }
+    
 
     const [input,setInput]=useState(inputValue)
     const [edit,setEdit]=useState(false)
@@ -21,11 +32,20 @@ function SingleSearchBar({label,ph,type}) {
     const handleClick=async (e)=>{
         e.preventDefault()
         if(edit && input){
+          if(tab==='personal'){
             dispatch({type:'SET_LOADING'})
             const response=await updatePersonalData(type,input,personalData._id,userData.token)
             dispatch({type:'SET_PERSONAL_DATA',payload:{
                 data:response
             }})
+          }
+          else if(tab==='professional'){
+            altDispatch({type:'SET_LOADING'})
+            const response=await updateProfessionalData(type,input,professionalData._id,userData.token)
+            altDispatch({type:'SET_PROFESSIONAL_DATA',payload:{
+                data:response
+            }})
+          } 
             setEdit(false)
         }
         else{
@@ -33,9 +53,10 @@ function SingleSearchBar({label,ph,type}) {
         }
     }
 
-  return (
+  return (  
+ 
     <div className="m-4 p-4 ">
-      <form className="form-control w-full h-full max-w-xl">
+      <form className="w-full h-full max-w-xl lg:max-w-3xl">
         <label className="label">
           <span className="label-text">{label}</span>
         </label>
@@ -46,7 +67,7 @@ function SingleSearchBar({label,ph,type}) {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={`Enter your ${ph}...`}
-            className="input input-bordered input-primary w-full max-w-xl"
+            className="input input-bordered input-primary w-full input-w-xl max-w-2xl"
             disabled={!edit}
           />
           <button onClick={handleClick} className="btn ">

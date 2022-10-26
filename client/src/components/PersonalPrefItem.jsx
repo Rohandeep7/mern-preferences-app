@@ -4,39 +4,64 @@ import {MdOutlineEdit,MdOutlineDelete} from 'react-icons/md'
 import Spinner from './shared/Spinner'
 import {Zoom} from '@mui/material'
 import PersonalInfoContext from '../context/PersonalInfoContext'
+import ProfessionalInfoContext from '../context/ProfessionalInfoContext'
+import {deleteProfessionalData,updateProfessionalData} from '../context/ProfessionalInfoActions'
 import {deletePersonalData,updatePersonalData} from '../context/PersonalInfoActions'
 import { useEffect } from 'react'
-function PersonalPrefItem({type,item}) {
+function PersonalPrefItem({tab,type,item}) {
 
     const { personalData,loading, editPersonalData, handleEditData, dispatch } =
       useContext(PersonalInfoContext);
+      const { professionalData, dispatch : altDispatch } = 
+      useContext(ProfessionalInfoContext);
 
     const [input,setInput]=useState(item.text)
 
     const userData = JSON.parse(localStorage.getItem("user"));
 
+    console.log(tab);
   const handleEdit=async ()=>{
     console.log('edit')
-    dispatch({type:'SET_LOADING'})
-    const response=await updatePersonalData(type,input,item._id,userData.token)
-    dispatch({type:'SET_PERSONAL_DATA',payload:{
-        data:response
-    }})
+    if(tab==='personal'){
+      dispatch({type:'SET_LOADING'})
+      const response=await updatePersonalData(type,input,item._id,userData.token)
+      dispatch({type:'SET_PERSONAL_DATA',payload:{
+          data:response
+      }})
+    }
+    else if(tab==='professional'){
+      altDispatch({type:'SET_LOADING'})
+      const response=await updateProfessionalData(type,input,item._id,userData.token)
+      altDispatch({type:'SET_PROFESSIONAL_DATA',payload:{
+          data:response
+      }})
+    }
+    
   }
 
   const handleDelete=async ()=>{
-    dispatch({type:'SET_LOADING'})
-    const response=await deletePersonalData(type,item._id,userData.token)
-    dispatch({type:'SET_PERSONAL_DATA',payload:{
-        data:response
-    }})
+    if(tab==='personal'){
+      dispatch({type:'SET_LOADING'})
+      const response=await deletePersonalData(type,item._id,userData.token)
+      dispatch({type:'SET_PERSONAL_DATA',payload:{
+          data:response
+      }})
+    }
+    else if(tab==='professional'){
+      altDispatch({type:'SET_LOADING'})
+      const response=await deleteProfessionalData(type,item._id,userData.token)
+      altDispatch({type:'SET_PROFESSIONAL_DATA',payload:{
+          data:response
+      }})
+    }
+    
     console.log('delete');
   }
 
   return (
     // loading ? 
     // <Spinner />:
-    // <Zoom in={true}>
+    <Zoom in={true}>
       <div className="bg-base-300 flex flex-row m-2 px-4 rounded-lg items-center justify-around w-12/12 text-center">
         <div className="">
           {/* <h3 className="text-lg">{item.text}</h3> */}
@@ -51,12 +76,12 @@ function PersonalPrefItem({type,item}) {
           <button onClick={handleEdit} className="btn md:mx-2 text-lg btn-ghost">
             <MdOutlineEdit />
           </button>
-          <button onClick={handleDelete} className="btn md:mx-2 text-lg btn-ghost">
+          <button onClick={handleDelete} className="btn  md:mx-2 text-lg btn-ghost">
             <MdOutlineDelete />
           </button>
         </div>
       </div>
-    // </Zoom>
+    </Zoom>
   );
 }
 

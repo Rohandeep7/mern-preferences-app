@@ -28,18 +28,18 @@ function PersonalPreferences() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2">
-          <SearchBar label="Favourite Foods" ph="food" type="foods" />
-          <SearchBar label="Hobbies" ph="hobby" type="hobbies" />
+          <SearchBar tab='personal' label="Favourite Foods" ph="food" type="foods" />
+          <SearchBar tab='personal' label="Hobbies" ph="hobby" type="hobbies" />
 
-          <SearchBar label="Favourite Places" ph="place" type="places" />
-          <SearchBar label="Favourite Movies" ph="movie" type="movies" />
+          <SearchBar tab='personal' label="Favourite Places" ph="place" type="places" />
+          <SearchBar tab='personal' label="Favourite Movies" ph="movie" type="movies" />
 
-          <SingleSearchBar
+          <SingleSearchBar tab='personal'
             label="T-Shirt Size"
             ph="shirt size"
             type="shirtSize"
           />
-          <SingleSearchBar label="Height (cm)" ph="height" type="height" />
+          <SingleSearchBar tab='personal' label="Height (cm)" ph="height" type="height" />
         </div>
       </div>
     // </Zoom>

@@ -6,20 +6,28 @@ import Navbar from "../layout/Navbar";
 import PersonalInfoContext from "../../context/PersonalInfoContext";
 import {getPersonalData} from '../../context/PersonalInfoActions'
 import Spinner from "../shared/Spinner";
+import ProfessionalInfoContext from "../../context/ProfessionalInfoContext";
+import { getProfessionalData } from "../../context/ProfessionalInfoActions";
 import { useState } from "react";
 function Home() {
   const { user, loading, dispatch } = useContext(AuthContext);
   const {loading:dataLoader,personalData,dispatch : altDispatch}=useContext(PersonalInfoContext)
 
+  const {loading:dataLoader2,professionalData,dispatch : altDispatch2}=useContext(ProfessionalInfoContext)
   
   const navigate = useNavigate();
-
+  
+  console.log(personalData);
+  console.log(professionalData)
   useEffect(()=>{
-    if (!user) {
-      navigate("/login");
-    }
-    else if(user){
+    
+    if(user){
       getAsyncData();
+      getAsyncProfData()
+    }
+    else if(user===null){
+      
+      navigate("/login");
     }
 
     
@@ -42,22 +50,37 @@ function Home() {
     
   };
 
+  const getAsyncProfData = async () => {
+    altDispatch2({ type: "SET_LOADING" });
+    const response = await getProfessionalData(userData.token);
+    setTimeout(()=>{
+      altDispatch2({
+        type: "GET_PROFESSIONAL_DATA",
+        payload: {
+          data: response[0],
+        },
+      });
+    },1000)
+    
+  };
+
 
   const handleLogout = () => {
     toast.success("Logout Successful");
     dispatch({ type: "LOGOUT" });
     altDispatch({type:'RESET'})
+    altDispatch2({type:'RESET'})
     navigate("/login");
   };
 
  
   return (
-    dataLoader ? (
+    (dataLoader && dataLoader2)? (
       <div className="h-screen my-96 bg-base-100">
         <Spinner />
       </div>
     ) :
-    <div className=" bg-base-100">
+    <div className="bg-base-100">
       <Navbar user={user} handleLogout={handleLogout} />
       <div className="my-12 gap-4 md:gap-16 tabs flex justify-center mx-auto">
         <NavLink

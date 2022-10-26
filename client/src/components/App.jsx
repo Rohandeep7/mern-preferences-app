@@ -9,11 +9,13 @@ import { PersonalInfoProvider } from '../context/PersonalInfoContext';
  import "react-toastify/dist/ReactToastify.css";
 import PersonalPreferences from './pages/PersonalPreferences';
 import ProfessionalInfo from './pages/ProfessionalInfo';
+import { ProfessionalInfoProvider } from '../context/ProfessionalInfoContext';
 function App() {
   return (
     <>
       <AuthProvider>
         <PersonalInfoProvider>
+          <ProfessionalInfoProvider>
           <Routes>
             <Route path="/" element={<Home />}>
               <Route index element={<PersonalPreferences />} />
@@ -25,6 +27,7 @@ function App() {
             <Route path="/*" element={<NotFound />} />
           </Routes>
           <ToastContainer />
+          </ProfessionalInfoProvider>
         </PersonalInfoProvider>
       </AuthProvider>
     </>

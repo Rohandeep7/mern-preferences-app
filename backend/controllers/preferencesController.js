@@ -4,7 +4,6 @@ const User = require("../models/userModel");
 const getPreferences = asyncHandler(async (req, res) => {
   let pref = await Pref.find({ user: req.user.id });
   if(!pref){
-    console.log('hello')
     pref = await Pref.create({ user: req.user.id });
   }
   res.status(200).json(pref);
@@ -22,7 +21,12 @@ const setPreferences = asyncHandler(async (req, res) => {
   };
   let options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-  if (type === "foods" || type==="hobbies" || type==="movies" || type==="places") {
+  if (
+    type === "cuisines" ||
+    type === "hobbies" ||
+    type === "languages" ||
+    type === "places"
+  ) {
     const newItem = { text };
 
     pref = await Pref.findOneAndUpdate(
@@ -30,7 +34,7 @@ const setPreferences = asyncHandler(async (req, res) => {
       { $push: { [type]: newItem } },
       options
     );
-  } else if (type === "shirtSize" || type==="height") {
+  } else if (type === "shirtSize" || type === "height") {
     let update = { [type]: text };
 
     pref = await Pref.findOneAndUpdate(query, update, options);
@@ -42,11 +46,15 @@ const setPreferences = asyncHandler(async (req, res) => {
 const updatePreference = asyncHandler(async (req, res) => {
   const { type, text } = req.body;
   let pref;
-  if(type==='foods' || type==='hobbies' || type==='movies' || type==='places'){
-        pref = await Pref.findOne({ [`${type}._id`]: req.params.id });
-  }
-  else if(type==='shirtSize' || type==='height'){
-        pref=await Pref.findById(req.params.id)
+  if (
+    type === "cuisines" ||
+    type === "hobbies" ||
+    type === "languages" ||
+    type === "places"
+  ) {
+    pref = await Pref.findOne({ [`${type}._id`]: req.params.id });
+  } else if (type === "shirtSize" || type === "height") {
+    pref = await Pref.findById(req.params.id);
   }
   
   if (!pref) {
@@ -67,7 +75,12 @@ const updatePreference = asyncHandler(async (req, res) => {
   }
 
   let updatedPref;
-  if(type==='foods' || type==='hobbies' || type==='movies' || type==='places'){
+  if (
+    type === "cuisines" ||
+    type === "hobbies" ||
+    type === "languages" ||
+    type === "places"
+  ) {
     updatedPref = await Pref.findOneAndUpdate(
       { user: req.user.id, [`${type}._id`]: req.params.id },
       {
@@ -76,9 +89,8 @@ const updatePreference = asyncHandler(async (req, res) => {
         },
       }
     );
-  }
-  else if(type==='shirtSize' || type==='height'){
-    updatedPref=await Pref.updateOne({user:req.user.id},{[type]:text})
+  } else if (type === "shirtSize" || type === "height") {
+    updatedPref = await Pref.updateOne({ user: req.user.id }, { [type]: text });
   }
   
   const updatedData=await Pref.findOne({user:req.user.id})
@@ -90,9 +102,9 @@ const deletePreference = asyncHandler(async (req, res) => {
   const { type} = req.body;
   let pref;
   if (
-    type === "foods" ||
+    type === "cuisines" ||
     type === "hobbies" ||
-    type === "movies" ||
+    type === "languages" ||
     type === "places"
   ) {
     pref = await Pref.findOne({ [`${type}._id`]: req.params.id });
@@ -125,9 +137,9 @@ const deletePreference = asyncHandler(async (req, res) => {
   
   let deletedPref;
   if (
-    type === "foods" ||
+    type === "cuisines" ||
     type === "hobbies" ||
-    type === "movies" ||
+    type === "languages" ||
     type === "places"
   ) {
     deletedPref = await Pref.updateOne(
@@ -137,7 +149,7 @@ const deletePreference = asyncHandler(async (req, res) => {
   } else if (type === "shirtSize" || type === "height") {
     deletedPref = await Pref.findOneAndUpdate(
       { user: req.user.id },
-      { $set: { [type]: '' } }
+      { $set: { [type]: "" } }
     );
   }
 

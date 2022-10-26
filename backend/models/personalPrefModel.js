@@ -7,7 +7,7 @@ const personalPrefSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    foods: {
+    cuisines: {
       type: [{ text: String }],
       default: [],
     },
@@ -15,7 +15,7 @@ const personalPrefSchema = mongoose.Schema(
       type: [{ text: String }],
       default: [],
     },
-    movies: {
+    languages: {
       type: [{ text: String }],
       default: [],
     },

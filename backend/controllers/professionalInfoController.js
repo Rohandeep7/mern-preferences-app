@@ -4,7 +4,6 @@ const User = require("../models/userModel");
 const getProfData = asyncHandler(async (req, res) => {
   let prof = await Prof.find({ user: req.user.id });
   if(!prof){
-    console.log('hello')
     prof = await Prof.create({ user: req.user.id });
   }
   res.status(200).json(prof);
@@ -22,7 +21,7 @@ const setProfData = asyncHandler(async (req, res) => {
   };
   let options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-  if (type === "skills" || type==="experience" || type==="certifications" || type==="links") {
+  if (type === "skills" || type==="experience" || type==="certifications" || type==="socials") {
     const newItem = { text };
 
     prof = await Prof.findOneAndUpdate(
@@ -42,7 +41,7 @@ const setProfData = asyncHandler(async (req, res) => {
 const updateProfData = asyncHandler(async (req, res) => {
   const { type, text } = req.body;
   let prof;
-  if (type === "skills" || type==="experience" || type==="certifications" || type==="links"){
+  if (type === "skills" || type==="experience" || type==="certifications" || type==="socials"){
         prof = await Prof.findOne({ [`${type}._id`]: req.params.id });
   }
   else if (type === "role" || type==="qualification"){
@@ -67,7 +66,12 @@ const updateProfData = asyncHandler(async (req, res) => {
   }
 
   let updatedProf;
-  if (type === "skills" || type==="experience" || type==="certifications" || type==="links"){
+  if (
+    type === "skills" ||
+    type === "experience" ||
+    type === "certifications" ||
+    type === "socials"
+  ) {
     updatedProf = await Prof.findOneAndUpdate(
       { user: req.user.id, [`${type}._id`]: req.params.id },
       {
@@ -76,9 +80,8 @@ const updateProfData = asyncHandler(async (req, res) => {
         },
       }
     );
-  }
-  else if (type === "role" || type==="qualification"){
-    updatedProf=await Prof.updateOne({user:req.user.id},{[type]:text})
+  } else if (type === "role" || type === "qualification") {
+    updatedProf = await Prof.updateOne({ user: req.user.id }, { [type]: text });
   }
   
   const updatedData=await Prof.findOne({user:req.user.id})
@@ -89,9 +92,14 @@ const updateProfData = asyncHandler(async (req, res) => {
 const deleteProfData= asyncHandler(async (req, res) => {
   const { type} = req.body;
   let pref;
-  if (type === "skills" || type==="experience" || type==="certifications" || type==="links") {
+  if (
+    type === "skills" ||
+    type === "experience" ||
+    type === "certifications" ||
+    type === "socials"
+  ) {
     prof = await Prof.findOne({ [`${type}._id`]: req.params.id });
-  } else if (type === "role" || type==="qualification") {
+  } else if (type === "role" || type === "qualification") {
     prof = await Prof.findById(req.params.id);
   }
 
@@ -119,15 +127,20 @@ const deleteProfData= asyncHandler(async (req, res) => {
   // );
   
   let deletedProf;
-  if (type === "skills" || type==="experience" || type==="certifications" || type==="links") {
+  if (
+    type === "skills" ||
+    type === "experience" ||
+    type === "certifications" ||
+    type === "socials"
+  ) {
     deletedProf = await Prof.updateOne(
       { user: req.user.id, [`${type}._id`]: req.params.id },
       { $pull: { [type]: { _id: req.params.id } } }
     );
-  } else if (type === "role" || type==="qualification") {
+  } else if (type === "role" || type === "qualification") {
     deletedProf = await Prof.findOneAndUpdate(
       { user: req.user.id },
-      { $set: { [type]: '' } }
+      { $set: { [type]: "" } }
     );
   }
 

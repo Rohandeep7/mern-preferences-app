@@ -33,7 +33,8 @@ function PersonalPreferences() {
           <SearchBar tab='professional' label="Skills" ph="skill" type="skills" />
           <SearchBar tab='professional' label="Experience" ph="experience" type="experience" />
 
-          <SearchBar tab='professional' label="Links" ph="link" type="links" />
+          <SearchBar tab='professional' label="Active on" ph="social" type="socials" />
+
           <SearchBar tab='professional' label="Certifications" ph="certification" type="certifications" />
 
           <SingleSearchBar

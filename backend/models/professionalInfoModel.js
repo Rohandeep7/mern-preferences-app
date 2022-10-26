@@ -19,7 +19,7 @@ const professionalInfoSchema = mongoose.Schema(
       type: [{ text: String }],
       default: [],
     },
-    links: {
+    socials: {
       type: [{ text: String }],
       default: [],
     },

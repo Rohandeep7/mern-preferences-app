@@ -28,7 +28,6 @@ function SingleSearchBar({tab,label,ph,type}) {
     const [input,setInput]=useState(inputValue)
     const [edit,setEdit]=useState(false)
 
-    // console.log(personalData)
     const handleClick=async (e)=>{
         e.preventDefault()
         if(edit && input){

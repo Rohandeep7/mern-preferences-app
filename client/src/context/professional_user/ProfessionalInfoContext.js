@@ -13,17 +13,6 @@ export const ProfessionalInfoProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(ProfessionalInfoReducer, initialState);
 
-  // const [editPersonalData,setEditPersonalData]=useState({
-  //   item:{},
-  //   edit:false
-  // })
-
-  // const handleEditData=(item)=>{
-  //   setEditPersonalData({
-  //     item,
-  //     edit:true
-  //   })
-  // }
 
   return (
     <ProfessionalInfoContext.Provider value={{ ...state, dispatch}}>

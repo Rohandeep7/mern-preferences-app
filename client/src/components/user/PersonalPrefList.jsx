@@ -8,7 +8,6 @@ function PersonalPrefList({tab,type}) {
     const {personalData,error,loading}=useContext(PersonalInfoContext);
     const {professionalData}=useContext(ProfessionalInfoContext);
 
-    console.log(tab);
   return tab === "personal" ? (
     <>
       <TransitionGroup>

@@ -4,7 +4,7 @@ const {
   getPreferences,
   loginAdmin
 } = require("../controllers/adminController");
-// const { protect } = require("../middleware/authMiddleware");
+
 const router = express.Router();
 
 

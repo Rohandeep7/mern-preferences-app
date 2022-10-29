@@ -4,7 +4,6 @@ import { Slide } from "@mui/material";
 function Navbar({user,handleLogout}) {
   return (
     <>
-      {/* <Slide in={true}> */}
         <div className="navbar bg-neutral text-neutral-content">
           <div className="navbar-start">
             <Link to="/" className="btn btn-ghost normal-case text-xl">
@@ -12,7 +11,7 @@ function Navbar({user,handleLogout}) {
             </Link>
           </div>
           <div className="navbar-end">
-            <h2 className="mx-4 sm:mx-2 text-sm">
+            <h2 className="mx-4 sm:mx-2 text-xs md:text-sm">
               Hello, {user ? user.name : 'Admin'}
             </h2>
             <btn
@@ -23,7 +22,7 @@ function Navbar({user,handleLogout}) {
             </btn>
           </div>
         </div>
-      {/* </Slide> */}
+
     </>
   );
 }

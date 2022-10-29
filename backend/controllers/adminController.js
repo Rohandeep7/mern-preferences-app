@@ -55,8 +55,6 @@ const getPreferences = asyncHandler(async (req, res) => {
     
   }
 
-  // , "experience.text":experience, "socials.text":social,"certifications.text":certifications,qualification:qualification,role:role
-
   res.status(200).json(prof);
 });
 

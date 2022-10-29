@@ -120,11 +120,6 @@ const deleteProfData= asyncHandler(async (req, res) => {
     throw new Error("User not authorized");
   }
 
-  // const deletedPref = await Pref.findOneAndUpdate(
-  //   query,
-  //   { $pull: { foods: { _id: req.params.id } } },
-  //   options
-  // );
   
   let deletedProf;
   if (

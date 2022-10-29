@@ -37,13 +37,23 @@ function AdminPersonalSearch() {
  
   const handleSubmit=async (e)=>{
     e.preventDefault();
-    Object.keys(o).forEach((k) => (o[k] = o[k].trim()));
+    if (
+      cuisine === "" &&
+      hobby === "" &&
+      place === "" &&
+      language === "" &&
+      shirtSize === "" &&
+      height === ""
+    ) {
+      return;
+    }
+      Object.keys(o).forEach((k) => (o[k] = o[k].trim()));
     dispatch({type:'SET_LOADING'})
-    const response = await axios.post("http://localhost:5000/admin/search",{tab:'personal',...o})
+    const response = await axios.post("/admin/search",{tab:'personal',...o})
     dispatch({type:'SET_PERSONAL_RESULTS',payload:{
       data:response.data
     }})
-    console.log(response.data);
+    
     
   }
 

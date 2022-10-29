@@ -128,12 +128,6 @@ const deletePreference = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("User not authorized");
   }
-
-  // const deletedPref = await Pref.findOneAndUpdate(
-  //   query,
-  //   { $pull: { foods: { _id: req.params.id } } },
-  //   options
-  // );
   
   let deletedPref;
   if (
@@ -157,11 +151,6 @@ const deletePreference = asyncHandler(async (req, res) => {
   res.status(200).json(updatedData);
 });
 
-// const deletedPref = await Pref.findOneAndUpdate(
-//   query,
-//   { $pull: { foods: { _id: req.params.id } } },
-//   options
-// );
 
 module.exports = {
   getPreferences,

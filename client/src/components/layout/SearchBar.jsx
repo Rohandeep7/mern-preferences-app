@@ -11,15 +11,9 @@ function SearchBar({tab,label,ph,type}) {
     const {personalData,editPersonalData,loading,dispatch}=useContext(PersonalInfoContext)
     const {dispatch:altDispatch}=useContext(ProfessionalInfoContext)
     const userData = JSON.parse(localStorage.getItem("user"));
-    // console.log(personalData)
+
     const [input, setInput] = useState("");
 
-    // useEffect(()=>{
-    //   if(editPersonalData.edit===true){
-    //     setInput(editPersonalData.item.text)
-    //   }
-    // })
-    // console.log(tab);
     const handleSubmit = async (e) => {
       e.preventDefault();
       if(input){

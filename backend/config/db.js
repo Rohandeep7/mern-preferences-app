@@ -8,7 +8,6 @@ const connectDB=async ()=>{
         console.log(`Connection Successful ${conn.connection.host}`.cyan.underline);
     }
     catch(err){
-        console.log(err);
         process.exit(1)
     }
 }

@@ -3,12 +3,13 @@ import {Link,useNavigate} from 'react-router-dom'
 import {Zoom} from '@mui/material'
 import axios from 'axios'
 import '../../index.css';
+import { useParams } from 'react-router-dom';
 import {toast} from 'react-toastify'
-import AuthContext from '../../context/AuthContext'
+import AuthContext from '../../context/auth/AuthContext'
 function Login() {
-  const {user, loading, error, dispatch } = useContext(AuthContext);
+  const {user,admin, loading, error, dispatch } = useContext(AuthContext);
+  const [userBtn,setUserBtn]=useState(true)
   const [loginData,setLoginData]=useState({})
-
   const {email,password}=loginData
     const navigate=useNavigate()
   const handleChange=(e)=>{
@@ -19,35 +20,75 @@ function Login() {
   }
 
   useEffect(()=>{
-    if (error !== null) {
-      toast.error(error);
-      dispatch({ type: "CLEAR_ERROR" });
-    } else if (user !== null) {
-      toast.success(`Welcome back ${user.name}`);
-      navigate("/");
+    if(userBtn){
+      if (error !== null) {
+        toast.error(error);
+        dispatch({ type: "CLEAR_ERROR" });
+      } else if (user !== null) {
+        toast.success(`Welcome back ${user.name}`);
+        navigate("/");
+      }
     }
+    else{
+      if (error !== null) {
+        toast.error(error);
+        dispatch({ type: "CLEAR_ERROR" });
+      } else if (admin !== null) {
+        toast.success(`${admin.message}`);
+        navigate("/admin");
+      }
+    }
+    
     // eslint-disable-next-line
-  },[user,error,loading])
+  },[user,admin,error,loading])
 
   const handleSubmit=async (e)=>{
     e.preventDefault()
-    
-    try{
+    if(userBtn){
+        try {
+          dispatch({ type: "SET_LOADING" });
+          const response = await axios.post(
+            "http://localhost:5000/api/users/login",
+            loginData
+          );
+          dispatch({
+            type: "LOGIN_USER",
+            payload: {
+              data: response.data,
+            },
+          });
+        } catch (err) {
+          dispatch({
+            type: "LOGIN_FAILURE",
+            payload: {
+              data: err.response.data.message,
+            },
+          });
+        }
+    }
+    else{
+      try {
         dispatch({ type: "SET_LOADING" });
         const response = await axios.post(
-          "http://localhost:5000/api/users/login",
+          "http://localhost:5000/admin/login",
           loginData
         );
-        dispatch({type:'LOGIN_USER',payload:{
-            data:response.data
-        }})
+        dispatch({
+          type: "LOGIN_ADMIN",
+          payload: {
+            data: response.data,
+          },
+        });
+      } catch (err) {
+        dispatch({
+          type: "LOGIN_FAILURE",
+          payload: {
+            data: err.response.data.message,
+          },
+        });
+      }
     }
-    catch(err){
-        dispatch({type:'LOGIN_FAILURE',payload:{
-            data:err.response.data.message
-        }})
-        
-    }
+    
   }
 
   
@@ -55,21 +96,40 @@ function Login() {
     <>
       <div className="h-screen rounded-lg ">
         <Zoom in={true}>
-          <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div className="my-12 space-x-8">
+              <button
+                onClick={() => setUserBtn(true)}
+                style={userBtn ? { border: "1px solid white" } : {}}
+                className="btn tab  btn-active btn-ghost text-white"
+              >
+                User Login
+              </button>
+              <button
+                onClick={() => setUserBtn(false)}
+                style={!userBtn ? { border: "1px solid white" } : {}}
+                className="btn tab btn-active btn-ghost text-white"
+              >
+                Admin Login
+              </button>
+            </div>
+
             <div className="w-full max-w-md space-y-8">
               <div>
                 <h2 className="header text-white text-6xl text-center">
                   Preferences
                 </h2>
                 <hr />
-                <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
-                  Sign in to your account
-                </h2>
+                  <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
+                    {userBtn
+                      ? "Sign in to your account"
+                      : "Sign in as an admin"}
+                  </h2>
                 <p
                   className="mt-2 text-center text-sm
             font-medium text-white"
                 >
-                  Welcome Back !
+                  {userBtn && "Welcome Back !"}
                 </p>
               </div>
               <form
@@ -113,15 +173,19 @@ function Login() {
                     />
                   </div>
                 </div>
+                {userBtn && (
+                  <Zoom in={true}>
+                    <div>
+                      <Link
+                        to="/register"
+                        className="text-gray-50 hover:text-gray-200 text-xs"
+                      >
+                        Don't have an account? Register
+                      </Link>
+                    </div>
+                  </Zoom>
+                )}
 
-                <div>
-                  <Link
-                    to="/register"
-                    className="text-gray-50 hover:text-gray-200 text-xs"
-                  >
-                    Don't have an account? Register
-                  </Link>
-                </div>
                 <div>
                   <button
                     type="submit"

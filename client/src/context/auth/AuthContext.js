@@ -1,11 +1,12 @@
 import { createContext, useEffect, useReducer } from "react"
-import AuthReducer from "./AuthReducer"
+import AuthReducer from './AuthReducer'
 const AuthContext=createContext()
 
 export const AuthProvider=({children})=>{
 
     const initialState = {
       user: JSON.parse(localStorage.getItem("user")) ? JSON.parse(localStorage.getItem('user')) : null,
+      admin:null,
       loading: false,
       error: null,
     };

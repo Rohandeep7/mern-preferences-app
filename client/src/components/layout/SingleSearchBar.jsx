@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useContext } from 'react';
 import {FaEdit} from 'react-icons/fa'
-import PersonalInfoContext from '../../context/PersonalInfoContext';
-import {updatePersonalData} from '../../context/PersonalInfoActions'
-import ProfessionalInfoContext from '../../context/ProfessionalInfoContext';
-import {updateProfessionalData} from '../../context/ProfessionalInfoActions'
+import PersonalInfoContext from '../../context/personal_user/PersonalInfoContext';
+import {updatePersonalData} from '../../context/personal_user/PersonalInfoActions'
+import ProfessionalInfoContext from '../../context/professional_user/ProfessionalInfoContext';
+import {updateProfessionalData} from '../../context/professional_user/ProfessionalInfoActions'
 function SingleSearchBar({tab,label,ph,type}) {
     const {personalData,error,loading,dispatch}=useContext(PersonalInfoContext)
     const {professionalData,loading:loading2,dispatch:altDispatch}=useContext(ProfessionalInfoContext)
@@ -34,14 +34,14 @@ function SingleSearchBar({tab,label,ph,type}) {
         if(edit && input){
           if(tab==='personal'){
             dispatch({type:'SET_LOADING'})
-            const response=await updatePersonalData(type,input,personalData._id,userData.token)
+            const response=await updatePersonalData(type,input.trim(),personalData._id,userData.token)
             dispatch({type:'SET_PERSONAL_DATA',payload:{
                 data:response
             }})
           }
           else if(tab==='professional'){
             altDispatch({type:'SET_LOADING'})
-            const response=await updateProfessionalData(type,input,professionalData._id,userData.token)
+            const response=await updateProfessionalData(type,input.trim(),professionalData._id,userData.token)
             altDispatch({type:'SET_PROFESSIONAL_DATA',payload:{
                 data:response
             }})

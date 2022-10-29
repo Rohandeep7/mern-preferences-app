@@ -4,7 +4,7 @@ import {Zoom} from '@mui/material'
 import axios from 'axios'
 import "../../index.css";
 import {toast} from 'react-toastify'
-import AuthContext from '../../context/AuthContext';
+import AuthContext from '../../context/auth/AuthContext';
 function Register() {
   const {user,error,loading,dispatch}=useContext(AuthContext)
   const [registerData,setRegisterData]=useState({})

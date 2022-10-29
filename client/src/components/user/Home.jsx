@@ -1,13 +1,13 @@
 import React, { useContext, useEffect } from "react";
 import { useNavigate , NavLink, Outlet} from "react-router-dom";
 import {toast} from 'react-toastify'
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../context/auth/AuthContext";
 import Navbar from "../layout/Navbar";
-import PersonalInfoContext from "../../context/PersonalInfoContext";
-import {getPersonalData} from '../../context/PersonalInfoActions'
+import PersonalInfoContext from "../../context/personal_user/PersonalInfoContext";
+import {getPersonalData} from '../../context/personal_user/PersonalInfoActions'
 import Spinner from "../shared/Spinner";
-import ProfessionalInfoContext from "../../context/ProfessionalInfoContext";
-import { getProfessionalData } from "../../context/ProfessionalInfoActions";
+import ProfessionalInfoContext from "../../context/professional_user/ProfessionalInfoContext";
+import { getProfessionalData } from "../../context/professional_user/ProfessionalInfoActions";
 import { useState } from "react";
 function Home() {
   const { user, loading, dispatch } = useContext(AuthContext);

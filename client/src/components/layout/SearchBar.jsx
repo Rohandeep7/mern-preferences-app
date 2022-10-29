@@ -1,12 +1,12 @@
 import React,{useState} from 'react'
 import { useContext } from 'react';
 import { useEffect } from 'react';
-import {getPersonalData,setPersonalData} from '../../context/PersonalInfoActions'
-import PersonalInfoContext from '../../context/PersonalInfoContext';
-import PersonalPrefList from '../PersonalPrefList';
+import {getPersonalData,setPersonalData} from '../../context/personal_user/PersonalInfoActions'
+import PersonalInfoContext from '../../context/personal_user/PersonalInfoContext';
+import PersonalPrefList from '../user/PersonalPrefList';
 import {FaEdit} from 'react-icons/fa'
-import ProfessionalInfoContext from '../../context/ProfessionalInfoContext';
-import {setProfessionalData} from '../../context/ProfessionalInfoActions'
+import ProfessionalInfoContext from '../../context/professional_user/ProfessionalInfoContext';
+import {setProfessionalData} from '../../context/professional_user/ProfessionalInfoActions'
 function SearchBar({tab,label,ph,type}) {
     const {personalData,editPersonalData,loading,dispatch}=useContext(PersonalInfoContext)
     const {dispatch:altDispatch}=useContext(ProfessionalInfoContext)
@@ -25,7 +25,7 @@ function SearchBar({tab,label,ph,type}) {
       if(input){
         if(tab==='personal'){
           dispatch({ type: "SET_LOADING" });
-          const response = await setPersonalData(type, input, userData.token);
+          const response = await setPersonalData(type, input.trim(), userData.token);
           dispatch({
             type: "SET_PERSONAL_DATA",
             payload: {
@@ -36,7 +36,7 @@ function SearchBar({tab,label,ph,type}) {
         }
         else if(tab==='professional'){
           altDispatch({ type: "SET_LOADING" });
-          const response = await setProfessionalData(type, input, userData.token);
+          const response = await setProfessionalData(type, input.trim(), userData.token);
           altDispatch({
             type: "SET_PROFESSIONAL_DATA",
             payload: {

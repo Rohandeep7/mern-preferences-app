@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { useContext } from 'react'
 import {MdOutlineEdit,MdOutlineDelete} from 'react-icons/md'
-import Spinner from './shared/Spinner'
-import {Zoom} from '@mui/material'
-import PersonalInfoContext from '../context/PersonalInfoContext'
-import ProfessionalInfoContext from '../context/ProfessionalInfoContext'
-import {deleteProfessionalData,updateProfessionalData} from '../context/ProfessionalInfoActions'
-import {deletePersonalData,updatePersonalData} from '../context/PersonalInfoActions'
+import Spinner from '../shared/Spinner'
+import {Zoom,Collapse} from '@mui/material'
+import PersonalInfoContext from '../../context/personal_user/PersonalInfoContext'
+import ProfessionalInfoContext from "../../context/professional_user/ProfessionalInfoContext";
+import {
+  deleteProfessionalData,
+  updateProfessionalData,
+} from "../../context/professional_user/ProfessionalInfoActions";
+import {deletePersonalData,updatePersonalData} from '../../context/personal_user/PersonalInfoActions'
 import { useEffect } from 'react'
 function PersonalPrefItem({tab,type,item}) {
 
@@ -59,9 +62,10 @@ function PersonalPrefItem({tab,type,item}) {
   }
 
   return (
-    // loading ? 
+    // loading ?
     // <Spinner />:
     <Zoom in={true}>
+    
       <div className="bg-base-300 flex flex-row m-2 px-4 rounded-lg items-center justify-around w-12/12 text-center">
         <div className="">
           {/* <h3 className="text-lg">{item.text}</h3> */}
@@ -73,14 +77,21 @@ function PersonalPrefItem({tab,type,item}) {
           />
         </div>
         <div className="ml-auto">
-          <button onClick={handleEdit} className="btn md:mx-2 text-lg btn-ghost">
+          <button
+            onClick={handleEdit}
+            className="btn md:mx-2 text-lg btn-ghost"
+          >
             <MdOutlineEdit />
           </button>
-          <button onClick={handleDelete} className="btn  md:mx-2 text-lg btn-ghost">
+          <button
+            onClick={handleDelete}
+            className="btn  md:mx-2 text-lg btn-ghost"
+          >
             <MdOutlineDelete />
           </button>
         </div>
       </div>
+
     </Zoom>
   );
 }

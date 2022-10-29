@@ -1,12 +1,12 @@
 function AuthReducer(state,action){
     switch (action.type) {
       case "REGISTER_USER":
-        console.log('hi')
+        console.log("hi");
         return {
           ...state,
           user: action.payload.data,
           loading: false,
-          error:null
+          error: null,
         };
       case "REGISTER_FAILURE":
         return {
@@ -19,7 +19,14 @@ function AuthReducer(state,action){
           ...state,
           user: action.payload.data,
           loading: false,
-          error:null
+          error: null,
+        };
+      case "LOGIN_ADMIN":
+        return {
+          ...state,
+          admin: action.payload.data,
+          loading: false,
+          error: null,
         };
       case "SET_LOADING":
         return {
@@ -38,12 +45,13 @@ function AuthReducer(state,action){
           user: null,
           loading: false,
           error: null,
+          admin:null
         };
-      case 'CLEAR_ERROR':
+      case "CLEAR_ERROR":
         return {
-            ...state,
-            error:null
-        }
+          ...state,
+          error: null,
+        };
       default:
         return state;
     }

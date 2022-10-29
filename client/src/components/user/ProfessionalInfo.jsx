@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Zoom } from "@mui/material";
 import { Fab } from "@mui/material";
 import SearchBar from "../layout/SearchBar";
-// import { getProfesData } from "../../context/ProfessionInfoActions";
-import { getProfessionalData } from "../../context/ProfessionalInfoActions";
-// import PersonalInfoContext from "../../context/PersonalInfoContext";
-import ProfessionalInfoContext from "../../context/ProfessionalInfoContext";
+import { getProfessionalData } from '../../context/professional_user/ProfessionalInfoActions';
+
+import ProfessionalInfoContext from "../../context/professional_user/ProfessionalInfoContext";
 import SingleSearchBar from "../layout/SingleSearchBar";
 import { useContext } from "react";
 import { useEffect } from "react";

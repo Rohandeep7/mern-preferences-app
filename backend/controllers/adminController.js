@@ -1,4 +1,3 @@
-const Admin = require("../models/adminModel");
 const Pref = require("../models/personalPrefModel");
 const Prof = require("../models/professionalInfoModel");
 const asyncHandler = require("express-async-handler");

@@ -48,7 +48,7 @@ function Login() {
         try {
           dispatch({ type: "SET_LOADING" });
           const response = await axios.post(
-            "http://localhost:5000/api/users/login",
+            "/api/users/login",
             loginData
           );
           dispatch({
@@ -70,7 +70,7 @@ function Login() {
       try {
         dispatch({ type: "SET_LOADING" });
         const response = await axios.post(
-          "http://localhost:5000/admin/login",
+          "/admin/login",
           loginData
         );
         dispatch({

@@ -35,7 +35,7 @@ function Register() {
     try {
       dispatch({ type: "SET_LOADING" });
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        "/api/users/register",
         registerData
       );
       dispatch({

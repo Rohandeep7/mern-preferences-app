@@ -1,5 +1,5 @@
 import axios from 'axios'
-const API_URL = "http://localhost:5000/api/professional-info/";
+const API_URL = "/api/professional-info/";
 
 
 export const getProfessionalData=async (token)=>{

@@ -11,11 +11,7 @@ function PersonalPreferences() {
   const { personalData, loading, error, dispatch } =
     useContext(PersonalInfoContext);
 
-    
-
-  // console.log(personalData);
   return (
-    // <Zoom in={true}>
     <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
       <div className="hero">
         <div className="flex flex-col hero-content text-center">
@@ -63,7 +59,6 @@ function PersonalPreferences() {
         />
       </div>
     </div>
-    // </Zoom>
   );
 }
 

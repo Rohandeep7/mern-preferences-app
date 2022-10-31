@@ -22,9 +22,9 @@ function PersonalPrefItem({tab,type,item}) {
 
     const userData = JSON.parse(localStorage.getItem("user"));
 
-    console.log(tab);
+  
   const handleEdit=async ()=>{
-    console.log('edit')
+    
     if(tab==='personal'){
       dispatch({type:'SET_LOADING'})
       const response=await updatePersonalData(type,input,item._id,userData.token)
@@ -58,17 +58,16 @@ function PersonalPrefItem({tab,type,item}) {
       }})
     }
     
-    console.log('delete');
+  
   }
 
   return (
-    // loading ?
-    // <Spinner />:
+
     <Zoom in={true}>
     
       <div className="bg-base-300 flex flex-row m-2 px-4 rounded-lg items-center justify-around w-12/12 text-center">
         <div className="">
-          {/* <h3 className="text-lg">{item.text}</h3> */}
+  
           <input
             type="text"
             onChange={(e) => setInput(e.target.value)}

@@ -17,8 +17,7 @@ function Home() {
   
   const navigate = useNavigate();
   
-  console.log(personalData);
-  console.log(professionalData)
+
   useEffect(()=>{
     
     if(user){

@@ -7,15 +7,18 @@ import PersonalSearchContext from "../../context/admin/PersonalSearchContext";
 import Spinner from "../shared/Spinner";
 import { useState } from "react";
 function Admin() {
-  const { user, admin,loading, dispatch } = useContext(AuthContext);
-  const {
-    dispatch: altDispatch,
-  } = useContext(PersonalSearchContext);
-
+  const { user, admin, loading, dispatch } = useContext(AuthContext);
+  const { dispatch: altDispatch } = useContext(PersonalSearchContext);
 
   const navigate = useNavigate();
 
+  const [tpLoad, setTpLoad] = useState(true);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setTpLoad(false);
+    }, 1000);
+  }, []);
 
   const handleLogout = () => {
     toast.success("Logout Successful");
@@ -24,7 +27,11 @@ function Admin() {
     navigate("/login");
   };
 
-  return (
+  return tpLoad ? (
+    <div className="h-screen my-96 bg-base-100">
+      <Spinner />
+    </div>
+  ) : (
     <div className="bg-base-100">
       <Navbar user={admin} handleLogout={handleLogout} />
       <div className="my-12 gap-4 md:gap-16 tabs flex justify-center mx-auto">

@@ -6,7 +6,7 @@ export const AuthProvider=({children})=>{
 
     const initialState = {
       user: JSON.parse(localStorage.getItem("user")) ? JSON.parse(localStorage.getItem('user')) : null,
-      admin:null,
+      admin:JSON.parse(localStorage.getItem("admin")) ? JSON.parse(localStorage.getItem('admin')) : null,
       loading: false,
       error: null,
     };
@@ -15,7 +15,8 @@ export const AuthProvider=({children})=>{
 
      useEffect(() => {
        localStorage.setItem("user", JSON.stringify(state.user));
-     }, [state.user]);
+       localStorage.setItem('admin',JSON.stringify(state.admin))
+     }, [state.user,state.admin]);
 
     return (
         <AuthContext.Provider value={{...state,dispatch}}>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Zoom } from "@mui/material";
-import { Fab } from "@mui/material";
+
 import SearchBar from "../layout/SearchBar";
 import { getProfessionalData } from '../../context/professional_user/ProfessionalInfoActions';
 
@@ -12,11 +11,8 @@ function PersonalPreferences() {
   const { professionalData, loading, error, dispatch } =
     useContext(ProfessionalInfoContext);
 
-    
-
-  // console.log(personalData);
   return (
-    // <Zoom in={true}>
+
       <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
         <div className="hero">
           <div className="flex flex-col hero-content text-center">
@@ -45,7 +41,7 @@ function PersonalPreferences() {
           <SingleSearchBar tab='professional' label="Current Role" ph="current role" type="role" />
         </div>
       </div>
-    // </Zoom>
+
   );
 }
 

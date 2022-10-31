@@ -39,18 +39,24 @@ function AdminProfessionalSearch() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({ type: "SET_LOADING" });
-    const response = await axios.post("http://localhost:5000/admin/search", {
-      tab: "professional",
-      ...o,
-    });
-    dispatch({
-      type: "SET_PROFESSIONAL_RESULTS",
-      payload: {
-        data: response.data,
-      },
-    });
-    console.log(response.data);
+    if(skill==='' && experience==='' && social==='' && qualification==='' && certifications==='' && role===''){
+      return
+    }
+    else{
+      dispatch({ type: "SET_LOADING" });
+      const response = await axios.post("http://localhost:5000/admin/search", {
+        tab: "professional",
+        ...o,
+      });
+      dispatch({
+        type: "SET_PROFESSIONAL_RESULTS",
+        payload: {
+          data: response.data,
+        },
+      });
+    }
+    
+
   };
 
   return (

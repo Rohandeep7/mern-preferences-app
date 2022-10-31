@@ -4,12 +4,15 @@ import { Slide } from "@mui/material";
 function Navbar({user,handleLogout}) {
   return (
     <>
-      {/* <Slide in={true}> */}
+      <Slide in={true}>
         <div className="navbar bg-neutral text-neutral-content">
           <div className="navbar-start">
-            <Link to="/" className="btn btn-ghost normal-case text-xl">
+            {user && user.name==='Admin' ? <Link to="/admin" className="btn btn-ghost normal-case text-xl">
               Preferences
-            </Link>
+            </Link> : <Link to="/" className="btn btn-ghost normal-case text-xl">
+              Preferences
+            </Link> }
+            
           </div>
           <div className="navbar-end">
             <h2 className="mx-4 sm:mx-2 text-sm">
@@ -23,7 +26,7 @@ function Navbar({user,handleLogout}) {
             </btn>
           </div>
         </div>
-      {/* </Slide> */}
+      </Slide>
     </>
   );
 }

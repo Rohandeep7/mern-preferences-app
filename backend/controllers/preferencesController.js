@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Pref = require("../models/personalPrefModel");
 const User = require("../models/userModel");
+
 const getPreferences = asyncHandler(async (req, res) => {
   let pref = await Pref.find({ user: req.user.id });
   if(!pref){

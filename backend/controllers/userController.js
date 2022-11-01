@@ -64,18 +64,9 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-const getUserDetails=asyncHandler(async (req,res)=>{
-    const {_id,name,email}= await User.findById(req.user.id)
-
-    res.json({
-      id:_id,
-      name,
-      email
-    })
-})
 
 const generateToken=(id)=>{
   return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:'30d'})
 }
 
-module.exports={registerUser,loginUser,getUserDetails}
+module.exports={registerUser,loginUser}

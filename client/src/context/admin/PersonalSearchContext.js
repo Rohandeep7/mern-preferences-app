@@ -12,21 +12,6 @@ export const PersonalSearchProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(PersonalSearchReducer, initialState);
 
-  // const [formData,setFormData]=useState({
-  //   cuisine: [''],
-  //   hobby: [''],
-  //   place: [''],
-  //   language: [''],
-  //   shirtSize: [''],
-  //   height: [''],
-  // })
-
-  // const handleFormData=(id,val)=>{
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [id]: val,
-  //   }));
-  // }
 
   return (
     <PersonalSearchContext.Provider

@@ -9,7 +9,6 @@ import PersonalSearchContext from "../../context/admin/PersonalSearchContext";
 import Spinner from "../shared/Spinner";
 import axios from "axios";
 import PersonalSearchList from "./PersonalSearchList";
-import TestInput from "../layout/TestInput";
 function AdminPersonalSearch() {
   const tab = "personal";
   const { results, error, loading, dispatch } = useContext(
@@ -17,16 +16,15 @@ function AdminPersonalSearch() {
   );
 
   const [formData, setFormData] = useState({
-    cuisine: "",
-    hobby: "",
-    place: "",
-    language: "",
-    shirtSize: "",
-    height: "",
-    test:['']
+    cuisine: [''],
+    hobby: [''],
+    place: [''],
+    language: [''],
+    shirtSize: '',
+    height: '',
   });
 
-  const { cuisine, hobby, place, language, shirtSize, height,test } = formData;
+  const { cuisine, hobby, place, language, shirtSize, height } = formData;
 
   const setValue = (id, val) => {
         setFormData((prev) => ({
@@ -36,10 +34,6 @@ function AdminPersonalSearch() {
   };
 
   const setMultipleValue=(id,index,val)=>{
-    // setFormData((prev)=>({
-    //   ...prev,
-    //   [id][index]:val,
-    // }))
     const form={...formData}
     form[id][index]=val
     setFormData(form)
@@ -53,33 +47,42 @@ function AdminPersonalSearch() {
   }
 
   const addMultipleValue=(id,index,val)=>{
-    // setFormData((prev)=>({
-    //   ...prev,
-    //   [id][index]:val,
-    // }))
     const form={...formData}
     const newForm=[...form[id],'']
     setFormData({...form,[id]:newForm})
   }
 
+  const arrayEquals=(a, b)=> {
+    return (
+      Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index])
+    );
+  }
+
   let o = Object.fromEntries(
-    Object.entries(formData).filter(([_, v]) => v != "")
+    Object.entries(formData).filter(([_, v]) => {
+      return Array.isArray(v) ? !arrayEquals(v,['']) : v!==''
+    } )
   );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    Object.keys(o).forEach((k) => (o[k] = o[k].trim()));
+    Object.keys(o).forEach((k) => {
+      Array.isArray(o[k]) ? o[k]=o[k].filter((item) => item !== "").map(ans=>ans.trim()) : o[k]=o[k].trim() 
+    });
+  
     if (
-      cuisine === "" &&
-      hobby === "" &&
-      place === "" &&
-      language === "" &&
+      (cuisine.length===1 && cuisine[0]==='') &&
+      (hobby.length===1 && hobby[0]==='') &&
+      (place.length===1 && place[0]==='') &&
+      (language.length===1 && language[0]==='') &&
       shirtSize === "" &&
       height === ""
     ) {
       return;
     } else {
-      console.log(test,'submit');
       dispatch({ type: "SET_LOADING" });
       const response = await axios.post("http://localhost:5000/admin/search", {
         tab: "personal",
@@ -94,10 +97,6 @@ function AdminPersonalSearch() {
     }
   };
 
-  const [select, setSelect] = useState("");
-  const handleSelectChange = (e) => {
-    setSelect(e.target.value);
-  };
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
@@ -117,31 +116,40 @@ function AdminPersonalSearch() {
             }`}
             onSubmit={handleSubmit}
           >
+            
             <InputField
               id="cuisine"
-              input={cuisine}
-              setValue={setValue}
+              inputList={cuisine}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
               label="Cuisine"
             />
             <InputField
               id="hobby"
-              input={hobby}
-              setValue={setValue}
+              inputList={hobby}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
               label="Hobby"
             />
             <InputField
               id="place"
-              input={place}
-              setValue={setValue}
+              inputList={place}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
               label="Place"
             />
             <InputField
               id="language"
-              input={language}
-              setValue={setValue}
+              inputList={language}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
               label="Language"
             />
-            {/* <InputField id='shirtSize' input={shirtSize} setValue={setValue} label="Shirt Size"/> */}
+
             <div className="m-4 p-4 mb-6 ">
               <label className="label">
                 <span className="label-text">Shirt Size</span>
@@ -174,24 +182,51 @@ function AdminPersonalSearch() {
                 step="10"
               />
               <div className="w-full flex justify-between text-xs px-2">
-                <span className='cursor-pointer' value='150' onClick={()=>setValue('height','150')}>150</span>
-                <span className='cursor-pointer' value='160' onClick={()=>setValue('height','160')}>160</span>
-                <span className='cursor-pointer' value='170' onClick={()=>setValue('height','170')}>170</span>
-                <span className='cursor-pointer' value='180' onClick={()=>setValue('height','180')}>180</span>
-                <span className='cursor-pointer' value='190' onClick={()=>setValue('height','190')}>190</span>
-                <span className='cursor-pointer' value='200' onClick={()=>setValue('height','200')}>200</span>
+                <span
+                  className="cursor-pointer"
+                  value="150"
+                  onClick={() => setValue("height", "150")}
+                >
+                  150
+                </span>
+                <span
+                  className="cursor-pointer"
+                  value="160"
+                  onClick={() => setValue("height", "160")}
+                >
+                  160
+                </span>
+                <span
+                  className="cursor-pointer"
+                  value="170"
+                  onClick={() => setValue("height", "170")}
+                >
+                  170
+                </span>
+                <span
+                  className="cursor-pointer"
+                  value="180"
+                  onClick={() => setValue("height", "180")}
+                >
+                  180
+                </span>
+                <span
+                  className="cursor-pointer"
+                  value="190"
+                  onClick={() => setValue("height", "190")}
+                >
+                  190
+                </span>
+                <span
+                  className="cursor-pointer"
+                  value="200"
+                  onClick={() => setValue("height", "200")}
+                >
+                  200
+                </span>
               </div>
-
             </div>
 
-            <TestInput id='test' inputList={test} removeMultipleValue={removeMultipleValue} addMultipleValue={addMultipleValue} setMultipleValue={setMultipleValue} label="Test"/>
-
-            {/* <InputField
-              id="height"
-              input={height}
-              setValue={setValue}
-              label="Height (cm)"
-            /> */}
             <button
               type="submit"
               className="p-4 mt-6 btn md:col-span-3  btn-block btn-primary"

@@ -22,34 +22,29 @@ const getPreferences = asyncHandler(async (req, res) => {
 
   let prof;
   if (tab === "professional") {
-    prof = await Prof.find({
-      "skills.text": skill,
-      "experience.text": experience,
-      "socials.text": social,
-      "certifications.text": certifications,
-      qualification: qualification,
-      role: role,
-    }).populate("user", "name email");
+
+    const query = [{}];
+    skill && query.push({ "skills.text": { $all: skill } });
+    experience && query.push({ "experience.text": { $all: experience } });
+    social && query.push({ "socials.text": { $all: social } });
+    certifications &&
+      query.push({ "certifications.text": { $all: certifications } });
+    role && query.push({ role: role });
+    qualification && query.push({ qualification: qualification });
+
+    prof = await Prof.find({ $and: query }).populate("user", "name email");
+
   } else {
-    if(height){
-      prof = await Pref.find({
-      "cuisines.text": cuisine,
-      "hobbies.text": hobby,
-      "places.text": place,
-      "languages.text": language,
-      shirtSize: shirtSize,
-      height : { $gte : height}
-    }).populate("user", "name email");
-    }
-    else{
-      prof = await Pref.find({
-        "cuisines.text": cuisine,
-        "hobbies.text": hobby,
-        "places.text": place,
-        "languages.text": language,
-        shirtSize: shirtSize,
-      }).populate("user", "name email");
-    }
+
+    const query=[{}]
+    cuisine && query.push({ "cuisines.text": { $all: cuisine } });
+    hobby && query.push({ "hobbies.text": { $all: hobby } });
+    place && query.push({ "places.text": { $all: place } });
+    language && query.push({ "languages.text": { $all: language } });
+    shirtSize && query.push({ shirtSize: shirtSize });
+    height && query.push({ height: { $gte: height } });
+    
+    prof = await Pref.find({ $and: query }).populate("user", "name email");
     
   }
 

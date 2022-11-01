@@ -10,21 +10,22 @@ import Spinner from "../shared/Spinner";
 import axios from "axios";
 import PersonalSearchList from "./PersonalSearchList";
 function AdminProfessionalSearch() {
-  const tab='professional'
-  const { results, profResults,error, loading, dispatch } = useContext(
+  const tab = "personal";
+  const { results, profResults, error, loading, dispatch } = useContext(
     PersonalSearchContext
   );
 
   const [formData, setFormData] = useState({
-    skill: "",
-    experience: "",
-    social: "",
-    qualification: "",
-    certifications: "",
+    skill: [""],
+    experience: [""],
+    social: [""],
+    certifications: [""],
     role: "",
+    qualification: "",
   });
 
-  const { skill, experience, social, qualification, certifications, role } = formData;
+  const { skill, experience, social, certifications, role, qualification } =
+    formData;
 
   const setValue = (id, val) => {
     setFormData((prev) => ({
@@ -33,16 +34,62 @@ function AdminProfessionalSearch() {
     }));
   };
 
+  const setMultipleValue = (id, index, val) => {
+    const form = { ...formData };
+    form[id][index] = val;
+    setFormData(form);
+  };
+
+  const removeMultipleValue = (id, index) => {
+    const form = { ...formData };
+    const newForm = [...form[id]];
+    newForm.splice(index, 1);
+    setFormData({ ...form, [id]: newForm });
+  };
+
+  const addMultipleValue = (id, index, val) => {
+    const form = { ...formData };
+    const newForm = [...form[id], ""];
+    setFormData({ ...form, [id]: newForm });
+  };
+
+  const arrayEquals = (a, b) => {
+    return (
+      Array.isArray(a) &&
+      Array.isArray(b) &&
+      a.length === b.length &&
+      a.every((val, index) => val === b[index])
+    );
+  };
+
   let o = Object.fromEntries(
-    Object.entries(formData).filter(([_, v]) => v != "")
+    Object.entries(formData).filter(([_, v]) => {
+      return Array.isArray(v) ? !arrayEquals(v, [""]) : v !== "";
+    })
   );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(skill==='' && experience==='' && social==='' && qualification==='' && certifications==='' && role===''){
-      return
-    }
-    else{
+    Object.keys(o).forEach((k) => {
+      Array.isArray(o[k])
+        ? (o[k] = o[k].filter((item) => item !== "").map((ans) => ans.trim()))
+        : (o[k] = o[k].trim());
+    });
+  
+    if (
+      skill.length === 1 &&
+      skill[0] === "" &&
+      social.length === 1 &&
+      social[0] === "" &&
+      experience.length === 1 &&
+      experience[0] === "" &&
+      certifications.length === 1 &&
+      certifications[0] === "" &&
+      qualification === "" &&
+      role === ""
+    ) {
+      return;
+    } else {
       dispatch({ type: "SET_LOADING" });
       const response = await axios.post("http://localhost:5000/admin/search", {
         tab: "professional",
@@ -55,9 +102,8 @@ function AdminProfessionalSearch() {
         },
       });
     }
-    
-
   };
+
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
@@ -79,40 +125,65 @@ function AdminProfessionalSearch() {
           >
             <InputField
               id="skill"
-              input={skill}
-              setValue={setValue}
+              inputList={skill}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
               label="Skill"
             />
             <InputField
               id="experience"
-              input={experience}
-              setValue={setValue}
+              inputList={experience}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
               label="Experience"
             />
             <InputField
               id="social"
-              input={social}
-              setValue={setValue}
-              label="Active On"
+              inputList={social}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
+              label="Active on"
             />
             <InputField
               id="certifications"
-              input={certifications}
-              setValue={setValue}
+              inputList={certifications}
+              removeMultipleValue={removeMultipleValue}
+              addMultipleValue={addMultipleValue}
+              setMultipleValue={setMultipleValue}
               label="Certification"
             />
-            <InputField
-              id="qualification"
-              input={qualification}
-              setValue={setValue}
-              label="Highest Qualifcation"
-            />
-            <InputField
-              id="role"
-              input={role}
-              setValue={setValue}
-              label="Current Role"
-            />
+
+            <div className="m-4 p-4 mb-6 ">
+              <label className="label">
+                <span className="label-text">Highest Qualifcation</span>
+              </label>
+              <input
+                id='qualification'
+                value={qualification}
+                onChange={(e) => setValue("qualification", e.target.value)}
+                type="text"
+                placeholder={`Search for...`}
+                className="input input-bordered input-primary mb-4 w-full max-w-xl lg:max-w-2xl"
+              />
+            </div>
+
+            <div className="m-4 p-4 mb-6 ">
+              <label className="label">
+                <span className="label-text">Current Role</span>
+              </label>
+              <input
+                id='role'
+                value={role}
+                onChange={(e) => setValue("role", e.target.value)}
+                type="text"
+                placeholder={`Search for...`}
+                className="input input-bordered input-primary mb-4 w-full max-w-xl lg:max-w-2xl"
+              />
+            </div>
+
             <button
               type="submit"
               className="p-4 mt-6 btn md:col-span-3  btn-block btn-primary"
@@ -122,7 +193,7 @@ function AdminProfessionalSearch() {
           </form>
         </div>
       </div>
-      {loading ? <Spinner /> : <PersonalSearchList results={tab==='personal' ? results : profResults} />}
+      {loading ? <Spinner /> : <PersonalSearchList results={profResults} />}
     </div>
   );
 }

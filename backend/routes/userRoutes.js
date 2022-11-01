@@ -11,6 +11,5 @@ router.post('/register',registerUser)
 
 router.post("/login",loginUser);
 
-router.get('/getMe',protect,getUserDetails)
 
 module.exports = router

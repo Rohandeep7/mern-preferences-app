@@ -12,7 +12,6 @@ function PersonalPreferences() {
     useContext(PersonalInfoContext);
 
   return (
-
     <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
       <div className="hero">
         <div className="flex flex-col hero-content text-center">
@@ -60,7 +59,6 @@ function PersonalPreferences() {
         />
       </div>
     </div>
-
   );
 }
 

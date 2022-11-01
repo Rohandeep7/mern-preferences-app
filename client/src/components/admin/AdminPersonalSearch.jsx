@@ -9,34 +9,66 @@ import PersonalSearchContext from "../../context/admin/PersonalSearchContext";
 import Spinner from "../shared/Spinner";
 import axios from "axios";
 import PersonalSearchList from "./PersonalSearchList";
+import TestInput from "../layout/TestInput";
 function AdminPersonalSearch() {
+  const tab = "personal";
+  const { results, error, loading, dispatch } = useContext(
+    PersonalSearchContext
+  );
 
-  const tab='personal'
-  const {results,error,loading,dispatch}=useContext(PersonalSearchContext)
+  const [formData, setFormData] = useState({
+    cuisine: "",
+    hobby: "",
+    place: "",
+    language: "",
+    shirtSize: "",
+    height: "",
+    test:['']
+  });
 
-  const [formData,setFormData]=useState({
-    cuisine:'',
-    hobby:'',
-    place:'',
-    language:'',
-    shirtSize:'',
-    height:''
-  })
+  const { cuisine, hobby, place, language, shirtSize, height,test } = formData;
 
-  const {cuisine,hobby,place,language,shirtSize,height}=formData
-
-  const setValue=(id,val)=>{
-    
-    setFormData((prev) => ({
+  const setValue = (id, val) => {
+        setFormData((prev) => ({
       ...prev,
       [id]: val,
     }));
+  };
+
+  const setMultipleValue=(id,index,val)=>{
+    // setFormData((prev)=>({
+    //   ...prev,
+    //   [id][index]:val,
+    // }))
+    const form={...formData}
+    form[id][index]=val
+    setFormData(form)
   }
 
-  let o = Object.fromEntries(Object.entries(formData).filter(([_, v]) => v != ''));
- 
-  const handleSubmit=async (e)=>{
+  const removeMultipleValue=(id,index)=>{
+    const form={...formData}
+    const newForm=[...form[id]]
+    newForm.splice(index,1)
+    setFormData({...form,[id]:newForm})
+  }
+
+  const addMultipleValue=(id,index,val)=>{
+    // setFormData((prev)=>({
+    //   ...prev,
+    //   [id][index]:val,
+    // }))
+    const form={...formData}
+    const newForm=[...form[id],'']
+    setFormData({...form,[id]:newForm})
+  }
+
+  let o = Object.fromEntries(
+    Object.entries(formData).filter(([_, v]) => v != "")
+  );
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    Object.keys(o).forEach((k) => (o[k] = o[k].trim()));
     if (
       cuisine === "" &&
       hobby === "" &&
@@ -46,16 +78,26 @@ function AdminPersonalSearch() {
       height === ""
     ) {
       return;
+    } else {
+      console.log(test,'submit');
+      dispatch({ type: "SET_LOADING" });
+      const response = await axios.post("http://localhost:5000/admin/search", {
+        tab: "personal",
+        ...o,
+      });
+      dispatch({
+        type: "SET_PERSONAL_RESULTS",
+        payload: {
+          data: response.data,
+        },
+      });
     }
-      Object.keys(o).forEach((k) => (o[k] = o[k].trim()));
-    dispatch({type:'SET_LOADING'})
-    const response = await axios.post("/admin/search",{tab:'personal',...o})
-    dispatch({type:'SET_PERSONAL_RESULTS',payload:{
-      data:response.data
-    }})
-    
-    
-  }
+  };
+
+  const [select, setSelect] = useState("");
+  const handleSelectChange = (e) => {
+    setSelect(e.target.value);
+  };
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
@@ -75,23 +117,91 @@ function AdminPersonalSearch() {
             }`}
             onSubmit={handleSubmit}
           >
-            <InputField id='cuisine' input={cuisine} setValue={setValue} label="Cuisine"/>
-            <InputField id='hobby' input={hobby} setValue={setValue} label="Hobby"/>
-            <InputField id='place' input={place} setValue={setValue} label="Place"/>
-            <InputField id='language' input={language} setValue={setValue} label="Language"/>
-            <InputField id='shirtSize' input={shirtSize} setValue={setValue} label="Shirt Size"/>
-            <InputField id='height' input={height} setValue={setValue} label="Height (cm)"/>
-            <button type='submit' className="p-4 mt-6 btn md:col-span-3  btn-block btn-primary">
+            <InputField
+              id="cuisine"
+              input={cuisine}
+              setValue={setValue}
+              label="Cuisine"
+            />
+            <InputField
+              id="hobby"
+              input={hobby}
+              setValue={setValue}
+              label="Hobby"
+            />
+            <InputField
+              id="place"
+              input={place}
+              setValue={setValue}
+              label="Place"
+            />
+            <InputField
+              id="language"
+              input={language}
+              setValue={setValue}
+              label="Language"
+            />
+            {/* <InputField id='shirtSize' input={shirtSize} setValue={setValue} label="Shirt Size"/> */}
+            <div className="m-4 p-4 mb-6 ">
+              <label className="label">
+                <span className="label-text">Shirt Size</span>
+              </label>
+              <select
+                id="shirtSize"
+                onChange={(e) => setValue("shirtSize", e.target.value)}
+                className="select select-primary w-full max-w-xl"
+              >
+                <option value="" selected>
+                  None
+                </option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+              </select>
+            </div>
+
+            <div className="m-4 p-4 mb-6 ">
+              <label className="label">
+                <span className="label-text">Height (cm)</span>
+              </label>
+              <input
+                type="range"
+                min="150"
+                max="200"
+                value={height}
+                className="range range-primary"
+                step="10"
+              />
+              <div className="w-full flex justify-between text-xs px-2">
+                <span className='cursor-pointer' value='150' onClick={()=>setValue('height','150')}>150</span>
+                <span className='cursor-pointer' value='160' onClick={()=>setValue('height','160')}>160</span>
+                <span className='cursor-pointer' value='170' onClick={()=>setValue('height','170')}>170</span>
+                <span className='cursor-pointer' value='180' onClick={()=>setValue('height','180')}>180</span>
+                <span className='cursor-pointer' value='190' onClick={()=>setValue('height','190')}>190</span>
+                <span className='cursor-pointer' value='200' onClick={()=>setValue('height','200')}>200</span>
+              </div>
+
+            </div>
+
+            <TestInput id='test' inputList={test} removeMultipleValue={removeMultipleValue} addMultipleValue={addMultipleValue} setMultipleValue={setMultipleValue} label="Test"/>
+
+            {/* <InputField
+              id="height"
+              input={height}
+              setValue={setValue}
+              label="Height (cm)"
+            /> */}
+            <button
+              type="submit"
+              className="p-4 mt-6 btn md:col-span-3  btn-block btn-primary"
+            >
               Submit
             </button>
           </form>
         </div>
-
       </div>
-      {
-        loading ?  <Spinner/> : <PersonalSearchList results={results}/>
-      }
-      
+      {loading ? <Spinner /> : <PersonalSearchList results={results} />}
     </div>
   );
 }

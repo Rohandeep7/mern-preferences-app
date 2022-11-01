@@ -12,8 +12,7 @@ export const ProfessionalInfoProvider = ({ children }) => {
 
 
   const [state, dispatch] = useReducer(ProfessionalInfoReducer, initialState);
-
-
+  
   return (
     <ProfessionalInfoContext.Provider value={{ ...state, dispatch}}>
       {children}

@@ -2,8 +2,7 @@ const Pref = require("../models/personalPrefModel");
 const Prof = require("../models/professionalInfoModel");
 const asyncHandler = require("express-async-handler");
 
-const ADMIN_EMAIL = "ronnddy7@gmail.com";
-const ADMIN_PWD = "12345";
+
 const getPreferences = asyncHandler(async (req, res) => {
   const {
     tab,
@@ -65,7 +64,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
     throw new Error("Please fill all the text fields");
   }
 
-  if (email !== ADMIN_EMAIL || password !== ADMIN_PWD) {
+  if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PWD) {
     res.status(400);
     throw new Error("Invalid Admin Credentials");
   }

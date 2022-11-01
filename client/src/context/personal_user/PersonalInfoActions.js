@@ -56,6 +56,5 @@ export const deletePersonalData = async (type,id,token) => {
       type: type,
     },
   });
-
   return response.data;
 };

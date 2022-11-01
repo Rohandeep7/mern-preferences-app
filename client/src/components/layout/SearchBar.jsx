@@ -14,6 +14,7 @@ function SearchBar({tab,label,ph,type}) {
 
     const [input, setInput] = useState("");
 
+  
     const handleSubmit = async (e) => {
       e.preventDefault();
       if(input){

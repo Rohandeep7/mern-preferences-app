@@ -91,7 +91,7 @@ function AdminProfessionalSearch() {
       return;
     } else {
       dispatch({ type: "SET_LOADING" });
-      const response = await axios.post("http://localhost:5000/admin/search", {
+      const response = await axios.post("/admin/search", {
         tab: "professional",
         ...o,
       });

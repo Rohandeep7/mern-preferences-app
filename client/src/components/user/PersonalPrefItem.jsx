@@ -71,7 +71,7 @@ function PersonalPrefItem({tab,type,item}) {
           <input
             type="text"
             onChange={(e) => setInput(e.target.value)}
-            className="input input-ghost w-full max-w-xl"
+            className="input input-ghost w-full max-w-xl capitalize"
             value={input}
           />
         </div>

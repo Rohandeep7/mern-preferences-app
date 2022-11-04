@@ -47,7 +47,7 @@ function InputField({
                       onChange={(e) => handleInputChange(e, i)}
                       type="text"
                       placeholder={`Search for...`}
-                      className="input input-bordered input-primary mb-4 w-full max-w-xl lg:max-w-2xl"
+                      className="input capitalize input-bordered input-primary mb-4 w-full max-w-xl lg:max-w-2xl"
                     />
                     {inputList.length !== 1 && (
                       <button

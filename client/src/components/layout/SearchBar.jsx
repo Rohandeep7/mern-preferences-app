@@ -20,7 +20,7 @@ function SearchBar({tab,label,ph,type}) {
       if(input){
         if(tab==='personal'){
           dispatch({ type: "SET_LOADING" });
-          const response = await setPersonalData(type, input.trim(), userData.token);
+          const response = await setPersonalData(type, input.trim().toLowerCase(), userData.token);
           dispatch({
             type: "SET_PERSONAL_DATA",
             payload: {
@@ -31,7 +31,7 @@ function SearchBar({tab,label,ph,type}) {
         }
         else if(tab==='professional'){
           altDispatch({ type: "SET_LOADING" });
-          const response = await setProfessionalData(type, input.trim(), userData.token);
+          const response = await setProfessionalData(type, input.trim().toLowerCase(), userData.token);
           altDispatch({
             type: "SET_PROFESSIONAL_DATA",
             payload: {
@@ -59,7 +59,7 @@ function SearchBar({tab,label,ph,type}) {
             onChange={(e) => setInput(e.target.value)}
             type="text"
             placeholder={`Add your favourite ${ph}...`}
-            className="input input-bordered input-primary w-full max-w-xl lg:max-w-2xl"
+            className="input input-bordered capitalize input-primary w-full max-w-xl lg:max-w-2xl"
           />
           <button className="btn btn-square px-8">Add</button>
         </div>

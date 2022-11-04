@@ -33,14 +33,14 @@ function SingleSearchBar({tab,label,ph,type}) {
         if(edit && input){
           if(tab==='personal'){
             dispatch({type:'SET_LOADING'})
-            const response=await updatePersonalData(type,input.trim(),personalData._id,userData.token)
+            const response=await updatePersonalData(type,input.trim().toLowerCase(),personalData._id,userData.token)
             dispatch({type:'SET_PERSONAL_DATA',payload:{
                 data:response
             }})
           }
           else if(tab==='professional'){
             altDispatch({type:'SET_LOADING'})
-            const response=await updateProfessionalData(type,input.trim(),professionalData._id,userData.token)
+            const response=await updateProfessionalData(type,input.trim().toLowerCase(),professionalData._id,userData.token)
             altDispatch({type:'SET_PROFESSIONAL_DATA',payload:{
                 data:response
             }})
@@ -62,15 +62,15 @@ function SingleSearchBar({tab,label,ph,type}) {
 
         <div className="input-group">
           <input
-            type="text"
+            type={type==='height' ? 'number' : 'text'}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={`Enter your ${ph}...`}
-            className="input input-bordered input-primary w-full input-w-xl max-w-2xl"
+            className="input input-bordered input-primary w-full capitalize input-w-xl max-w-2xl"
             disabled={!edit}
           />
           <button onClick={handleClick} className="btn ">
-            {edit ? "Submit" : <FaEdit />}
+            {edit ? "Save" : <FaEdit />}
           </button>
         </div>
       </form>

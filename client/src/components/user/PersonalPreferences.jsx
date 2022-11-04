@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Zoom } from "@mui/material";
 import { Fab } from "@mui/material";
 import SearchBar from "../layout/SearchBar";
-import { getPersonalData } from "../../context/personal_user/PersonalInfoActions";
+import {FaEdit} from 'react-icons/fa'
+import { getPersonalData,updatePersonalData} from "../../context/personal_user/PersonalInfoActions";
 import PersonalInfoContext from "../../context/personal_user/PersonalInfoContext";
 import SingleSearchBar from "../layout/SingleSearchBar";
 import { useContext } from "react";
@@ -10,6 +11,25 @@ import { useEffect } from "react";
 function PersonalPreferences() {
   const { personalData, loading, error, dispatch } =
     useContext(PersonalInfoContext);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    let inputValue=''
+    if(personalData && personalData.shirtSize) inputValue=personalData.shirtSize 
+    const [edit,setEdit]=useState(false)
+    const [shirtInput,setShirtInput]=useState(inputValue)
+
+    const handleClick=async (e)=>{
+      e.preventDefault()
+      if(edit){
+          const response=await updatePersonalData('shirtSize',shirtInput.trim(),personalData._id,userData.token)
+          dispatch({type:'SET_PERSONAL_DATA',payload:{
+              data:response
+          }})
+        setEdit(false)
+      }
+      else{
+          setEdit(true)
+      }
+  }
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto  bg-base-200">
@@ -45,12 +65,33 @@ function PersonalPreferences() {
           type="languages"
         />
 
-        <SingleSearchBar
-          tab="personal"
-          label="T-Shirt Size"
-          ph="shirt size"
-          type="shirtSize"
-        />
+        <div className="m-4 p-4 mb-6 ">
+          <label className="label">
+            <span className="label-text">Shirt Size</span>
+          </label>
+          <div className="input-group">
+          <select
+            id="shirtSize"
+            disabled={!edit && 'disabled'}
+            value={shirtInput}
+            onChange={(e)=>setShirtInput(e.target.value)}
+            className="select select-primary w-full max-w-md lg:max-w-2xl"
+          >
+            <option value="" >
+              None
+            </option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button onClick={handleClick} className="btn ">
+            {edit ? "Save" : <FaEdit />}
+          </button>
+          </div>
+          
+        </div>
+
         <SingleSearchBar
           tab="personal"
           label="Height (cm)"

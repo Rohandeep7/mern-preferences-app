@@ -36,7 +36,7 @@ function AdminProfessionalSearch() {
 
   const setMultipleValue = (id, index, val) => {
     const form = { ...formData };
-    form[id][index] = val;
+    form[id][index] = val.toLowerCase();
     setFormData(form);
   };
 

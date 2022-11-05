@@ -30,7 +30,7 @@ function AdminProfessionalSearch() {
   const setValue = (id, val) => {
     setFormData((prev) => ({
       ...prev,
-      [id]: val,
+      [id]: val.toLowerCase(),
     }));
   };
 
@@ -161,12 +161,12 @@ function AdminProfessionalSearch() {
                 <span className="label-text">Highest Qualifcation</span>
               </label>
               <input
-                id='qualification'
+                id="qualification"
                 value={qualification}
                 onChange={(e) => setValue("qualification", e.target.value)}
                 type="text"
                 placeholder={`Search for...`}
-                className="input input-bordered input-primary mb-4 w-full max-w-xl lg:max-w-2xl"
+                className="input input-bordered input-primary capitalize mb-4 w-full max-w-xl lg:max-w-2xl"
               />
             </div>
 
@@ -175,12 +175,12 @@ function AdminProfessionalSearch() {
                 <span className="label-text">Current Role</span>
               </label>
               <input
-                id='role'
+                id="role"
                 value={role}
                 onChange={(e) => setValue("role", e.target.value)}
                 type="text"
                 placeholder={`Search for...`}
-                className="input input-bordered input-primary mb-4 w-full max-w-xl lg:max-w-2xl"
+                className="input input-bordered input-primary mb-4 capitalize w-full max-w-xl lg:max-w-2xl"
               />
             </div>
 
@@ -193,7 +193,13 @@ function AdminProfessionalSearch() {
           </form>
         </div>
       </div>
-      {loading ? <Spinner /> : <PersonalSearchList results={profResults} />}
+      {loading ? (
+        <div className="pb-16 mb-4">
+          <Spinner />
+        </div>
+      ) : (
+        <PersonalSearchList results={profResults} />
+      )}
     </div>
   );
 }

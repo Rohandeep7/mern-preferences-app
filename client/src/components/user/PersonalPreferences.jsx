@@ -70,26 +70,23 @@ function PersonalPreferences() {
             <span className="label-text">Shirt Size</span>
           </label>
           <div className="input-group">
-          <select
-            id="shirtSize"
-            disabled={!edit && 'disabled'}
-            value={shirtInput}
-            onChange={(e)=>setShirtInput(e.target.value)}
-            className="select select-primary w-full max-w-md lg:max-w-2xl"
-          >
-            <option value="" >
-              None
-            </option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-          </select>
-          <button onClick={handleClick} className="btn ">
-            {edit ? "Save" : <FaEdit />}
-          </button>
+            <select
+              id="shirtSize"
+              disabled={!edit && "disabled"}
+              value={shirtInput}
+              onChange={(e) => setShirtInput(e.target.value)}
+              className="select select-primary w-10/12 md:w-11/12"
+            >
+              <option value="">None</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+            <button onClick={handleClick} className="btn ">
+              {edit ? "Save" : <FaEdit />}
+            </button>
           </div>
-          
         </div>
 
         <SingleSearchBar

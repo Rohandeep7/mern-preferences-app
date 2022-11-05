@@ -116,7 +116,6 @@ function AdminPersonalSearch() {
             }`}
             onSubmit={handleSubmit}
           >
-            
             <InputField
               id="cuisine"
               inputList={cuisine}
@@ -236,7 +235,13 @@ function AdminPersonalSearch() {
           </form>
         </div>
       </div>
-      {loading ? <Spinner /> : <PersonalSearchList results={results} />}
+      {loading ? (
+        <div className="pb-16 mb-4">
+          <Spinner />
+        </div>
+      ) : (
+        <PersonalSearchList results={results} />
+      )}
     </div>
   );
 }

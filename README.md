@@ -27,20 +27,20 @@
 ## Overview
 
 ### - Login Page
-![Login_Page](/uploads/844e2169d31d86960f7d325a6171b9a0/Login_Page.png)
+![Login Page](https://user-images.githubusercontent.com/86556638/200159715-f668c5b0-3e8f-436c-8bf2-1e0a2ed90204.png)
 
 ### - User Pages
 Personal Preferences             |  Professional Info
 :-------------------------:|:-------------------------:
-![Home_Page](/uploads/1c5be477b2c90c4e2366b36ec7678fb5/Home_Page.png)  | ![Professional_Info](/uploads/ba9c444f0dba222b68110f6cdcff1c5d/Professional_Info.png)
+![Home Page](https://user-images.githubusercontent.com/86556638/200159714-a3a0911a-23f5-4eed-89d6-e4de28b074aa.png)  | ![professional_info](https://user-images.githubusercontent.com/86556638/200159719-06bed06a-4f00-44e1-b4d0-fc11ee5790f7.png)
 
 ### - Admin Pages
 Personal Search             |  Professional Search
 :-------------------------:|:-------------------------:
-![Admin_Dashboard](/uploads/577a8411eab140518299c58d7afc0920/Admin_Dashboard.png)  | ![Admin_Dashboard_-_Professional_Info](/uploads/cc4558c65d20f6c0a3263f8c190ed7ff/Admin_Dashboard_-_Professional_Info.png)
+![admin_search](https://user-images.githubusercontent.com/86556638/200159718-dfc40054-ccf2-42bc-84ca-53f78ab3ffe7.png)  | ![prof_search](https://user-images.githubusercontent.com/86556638/200159717-8de8d573-4508-48e7-ac91-acb0ffa27ad9.png)
 
 ### - Not Found
-![NotFound](/uploads/8ce64e513c5193883e251ff7bc99b63c/NotFound.png)
+![Page Not Found](https://user-images.githubusercontent.com/86556638/200159689-4fbfcb82-a135-48ab-a64c-0251e780fc88.png)
 
 
 ### Built With
